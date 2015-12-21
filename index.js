@@ -37,16 +37,16 @@ var getListing = function(dirPath) {
     }
 
     // Create our final result array containing directories and files
-    for(var i = 0, len = directoryEntries.length; i < len; i++) {
+    for(i = 0, len = directoryEntries.length; i < len; i++) {
         results.push(directoryEntries[i]);
     }
-    for(var i = 0, len = fileEntries.length; i < len; i++) {
+    for(i = 0, len = fileEntries.length; i < len; i++) {
         results.push(fileEntries[i]);
     }
 
     // Return our concatenated results
     return results;
-}
+};
 
 app.use(function(req, res, next) {
     // Grab the folder and/or files the user has selected
@@ -66,25 +66,25 @@ app.use(function(req, res, next) {
     // Check if the file or directory even exists
     try {
         var stats = fs.lstatSync(fullPath);
+
+        // If the queried path is a directory, generate a listing and render it
+        if (stats.isDirectory()) {
+            var files = getListing(fullPath);
+            // Generate a url to click on for every file
+            for (var i = 0, len = files.length; i < len; i++) {
+                files[i].url = '/' + path.join(queryPath, files[i].name);
+            }
+            // Render our index template, passing it some values to display
+            res.render('index', {files: files, up: oneUp, directory: '/' + queryPath});
+        } else {
+            // else just download cause it's a file
+            res.download(fullPath);
+        }
     }
     catch (e) {
         // If not, return with status code 500
         res.status(500).send('Error');
         return;
-    }
-
-    // If the queried path is a directory, generate a listing and render it
-    if (stats.isDirectory()) {
-        var files = getListing(fullPath);
-        // Generate a url to click on for every file
-        for (var i = 0, len = files.length; i < len; i++) {
-            files[i].url = '/' + path.join(queryPath, files[i].name);
-        }
-        // Render our index template, passing it some values to display
-        res.render('index', {files: files, up: oneUp, directory: '/' + queryPath});
-    } else {
-        // else just download cause it's a file
-        res.download(fullPath);
     }
 });
 
