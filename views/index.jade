@@ -10,9 +10,9 @@ html(lang='en')
             $(document).ready(function() { $('tr[data-href]').on("click", function() { document.location = $(this).data('href'); }); });
         //- Include the Hack font css
         link(rel='stylesheet', type='text/css', href='//cdn.jsdelivr.net/font-hack/2.018/css/hack-extended.min.css')
-        //- Some basic styling
-        style.
-            body { background-color: #fafafa; color: #383838; font-family: 'Hack', monospace; font-size: 9pt; } table { width: 1366px; margin-left: auto; margin-right: auto; margin-top: 20px; margin-bottom: 20px; text-align: justify; border: 1px solid #aaa; } th { font-weight: bold; background: #eaeaea; border-bottom: 1px solid #aaa; } tr:nth-child(even) { background: #f0f0f0; } th,td { padding: 0; } .file { cursor: pointer; } .file:hover { background-color: rgba(0, 0, 0, 0.1); }
+        //- Include the basic style
+        style
+            include ../css/index.css
     body
         table
             tbody
