@@ -89,7 +89,7 @@ app.use(function(req, res, next) {
 });
 
 // Listen on the port specified in the config or 8781 by default
-var server = app.listen(config.port || 8781, function() {
+var server = app.listen(config.port || 8781, config.host || '127.0.0.1', function() {
     var host = server.address().address;
     var port = server.address().port;
 

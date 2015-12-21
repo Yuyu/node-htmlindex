@@ -1,6 +1,6 @@
 {
   "name": "node-htmlindex",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Fancy HTML directory listing",
   "main": "index.js",
   "scripts": {
