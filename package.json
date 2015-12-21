@@ -1,0 +1,28 @@
+{
+  "name": "node-htmlindex",
+  "version": "0.0.2",
+  "description": "Fancy HTML directory listing",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [
+    "http",
+    "directory",
+    "index",
+    "fancy"
+  ],
+  "author": {
+    "name": "Yuyu",
+    "email": "admin@yuyu.io",
+    "url": "https://yuyu.io/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "alphanumeric-sort": "0.0.1",
+    "async": "^1.5.0",
+    "dateformat": "^1.0.12",
+    "express": "^4.13.3",
+    "filesize": "^3.1.4",
+    "jade": "^1.11.0"
+  }
+}

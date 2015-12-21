@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        title!= directory
+        //- Include jQuery... version should be irrelevant actually
+        script(type='text/javascript', src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js')
+        //- Simple jQuery to make sure clicking on an entry actually opens/downloads the path
+        script(type='text/javascript').
+            $(document).ready(function() { $('tr[data-href]').on("click", function() { document.location = $(this).data('href'); }); });
+        //- Include the Hack font css
+        link(rel='stylesheet', type='text/css', href='//cdn.jsdelivr.net/font-hack/2.018/css/hack-extended.min.css')
+        //- Some basic styling
+        style.
+            body { background-color: #fafafa; color: #383838; font-family: 'Hack', monospace; font-size: 9pt; } table { width: 1366px; margin-left: auto; margin-right: auto; margin-top: 20px; margin-bottom: 20px; text-align: justify; border: 1px solid #aaa; } th { font-weight: bold; background: #eaeaea; border-bottom: 1px solid #aaa; } tr:nth-child(even) { background: #f0f0f0; } th,td { padding: 0; } .file { cursor: pointer; } .file:hover { background-color: rgba(0, 0, 0, 0.1); }
+    body
+        table
+            tbody
+                tr
+                    th Name
+                    th Size
+                    th Date
+                //- Static generation of the "go one up" entry... this is (in my opinion) nicer than adding it as a file
+                tr(class='file', data-href=up)
+                    td ..
+                    td -
+                    td -
+                //- Iterate through all files to generate our table entries
+                each file, index in files
+                    tr(class='file', data-href=file.url)
+                        if file.isDirectory
+                            td!= file.name+'/'
+                            td -
+                        else
+                            td!= file.name
+                            td!= file.size
+                        td!= file.date
