@@ -50,7 +50,7 @@ var getListing = function(dirPath) {
 
 app.use(function(req, res, next) {
     // Grab the folder and/or files the user has selected
-    var queryPath = decodeURI(req.url.slice(1));
+    var queryPath = decodeURIComponent(req.url.slice(1));
 
     // Basic filter so the user can't break out of the base path by doing stuff like GET /.. or GET /./..
     // TODO: Make sure it works with file names containing two dots though
@@ -72,7 +72,7 @@ app.use(function(req, res, next) {
             var files = getListing(fullPath);
             // Generate a url to click on for every file
             for (var i = 0, len = files.length; i < len; i++) {
-                files[i].url = '/' + path.join(queryPath, files[i].name);
+                files[i].url = '/' + encodeURIComponent(path.join(queryPath, files[i].name));
             }
             // Render our index template, passing it some values to display
             res.render('index', {files: files, up: oneUp, directory: '/' + queryPath});
