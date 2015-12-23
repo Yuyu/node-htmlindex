@@ -27,9 +27,11 @@ var getListing = function(dirPath) {
         // Grab file stats containing size, changed date, and if it's a directory
         var stats = fs.lstatSync(path.join(dirPath, file));
         // Create a entry out of it
-        var entry = {name: file, isDirectory: stats.isDirectory(), size: filesize(stats.size), date: dateformat(stats.ctime, 'yyyy-mm-dd')};
+        var entry = {name: file, url: encodeURIComponent(file), isDirectory: stats.isDirectory(), size: filesize(stats.size), date: dateformat(stats.ctime, 'yyyy-mm-dd')};
         // Sort it into our arrays
         if (stats.isDirectory()) {
+            entry.name += '/';
+            entry.url += '/';
             directoryEntries.push(entry);
         } else {
             fileEntries.push(entry);
@@ -50,7 +52,8 @@ var getListing = function(dirPath) {
 
 app.use(function(req, res, next) {
     // Grab the folder and/or files the user has selected
-    var queryPath = decodeURIComponent(req.url.slice(1));
+    var queryPath = decodeURIComponent(req.url).replace(/^\/+/, '');
+    console.log(queryPath);
 
     // Basic filter so the user can't break out of the base path by doing stuff like GET /.. or GET /./..
     // TODO: Make sure it works with file names containing two dots though
@@ -60,8 +63,6 @@ app.use(function(req, res, next) {
     }
     // Generate our local path
     var fullPath = path.join(config.basePath, queryPath);
-    // Grab the parent directory of the queried path
-    var oneUp = '/' + path.dirname(queryPath);
 
     // Check if the file or directory even exists
     try {
@@ -70,12 +71,8 @@ app.use(function(req, res, next) {
         // If the queried path is a directory, generate a listing and render it
         if (stats.isDirectory()) {
             var files = getListing(fullPath);
-            // Generate a url to click on for every file
-            for (var i = 0, len = files.length; i < len; i++) {
-                files[i].url = '/' + encodeURIComponent(path.join(queryPath, files[i].name));
-            }
             // Render our index template, passing it some values to display
-            res.render('index', {files: files, up: oneUp, directory: '/' + queryPath});
+            res.render('index', {files: files, directory: queryPath});
         } else {
             // else just download cause it's a file
             res.download(fullPath);

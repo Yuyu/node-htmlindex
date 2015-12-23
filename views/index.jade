@@ -20,8 +20,8 @@ html(lang='en')
                     th Name
                     th Size
                     th Date
-                //- Static generation of the "go one up" entry... this is (in my opinion) nicer than adding it as a file
-                tr(class='file', data-href=up)
+                //- Static generation of the "go one up" entry
+                tr(class='file', data-href='../')
                     td ..
                     td -
                     td -
@@ -29,7 +29,7 @@ html(lang='en')
                 each file, index in files
                     tr(class='file', data-href=file.url)
                         if file.isDirectory
-                            td!= file.name+'/'
+                            td!= file.name
                             td -
                         else
                             td!= file.name
